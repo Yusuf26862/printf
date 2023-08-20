@@ -19,36 +19,26 @@ int _printf(const char *format, ...)
 		{
 			format++;
 			if (*format == '%')
-			/*if (*format == '%')*/
-			{
 				putchar('%');
-			}
 			else if (*format == 'c')
-			{
 				int ch = va_arg(args, int);
 
 				putchar(ch);
-			}
-			/*
-			else if (*format == 'i' || *format == 'd')
-			{
-				int num = va_arg(args, int);
+			else if (*format == 's')
+				char *str = va_arg(args, char *);
 
-				putchar(num);
-			}*/
+				while (*str)
+					putchar(*str);
+					str++;
 		}
 		else if (*format == '\\')
 		{
 			format++;
 			if (*format == 'n')
-			{
 				putchar('\n');
-			}
 		}
 		else
-		{
 			putchar(*format);
-		}
 		format++;
 	}
 	return (0);
