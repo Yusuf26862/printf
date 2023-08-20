@@ -17,8 +17,9 @@ int _printf(const char *format, ...)
 	{
 		if (*format == '%')
 		{
-			*format++;
+			format++;
 			if (*format == '%')
+			/*if (*format == '%')*/
 			{
 				putchar('%');
 			}
@@ -28,16 +29,17 @@ int _printf(const char *format, ...)
 
 				putchar(ch);
 			}
+			/*
 			else if (*format == 'i' || *format == 'd')
 			{
 				int num = va_arg(args, int);
 
 				putchar(num);
-			}
+			}*/
 		}
 		else if (*format == '\\')
 		{
-			*format++;
+			format++;
 			if (*format == 'n')
 			{
 				putchar('\n');
@@ -47,7 +49,7 @@ int _printf(const char *format, ...)
 		{
 			putchar(*format);
 		}
-		*format++;
+		format++;
 	}
 	return (0);
 }
