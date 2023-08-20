@@ -19,17 +19,25 @@ int _printf(const char *format, ...)
 		{
 			format++;
 			if (*format == '%')
+			{
 				putchar('%');
+			}
 			else if (*format == 'c')
+			{
 				int ch = va_arg(args, int);
 
 				putchar(ch);
+			}
 			else if (*format == 's')
+			{
 				char *str = va_arg(args, char *);
 
 				while (*str)
+				{
 					putchar(*str);
 					str++;
+				}
+			}
 		}
 		else if (*format == '\\')
 		{
