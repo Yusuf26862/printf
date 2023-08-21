@@ -1,57 +1,28 @@
-#include <stdarg.h>
 #include "main.h"
 
 /**
- * _printf - print formated string.
- * @format: the string to be formatted.
- *
- * Return: The number of characters printed.
+ * _printf - Receives the main string and all the necessary parameters to
+ * print a formated string
+ * @format: A string containing all the desired characters
+ * Return: A total count of the characters printed
  */
 
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int count = 0;
+	int printed_cha;
+	conver_t f_list[] = {
+		{"c", print_char},
+		{"s", print_string},
+		{"%", print_percent},
+	};
+	va_list arg_list;
 
-	va_start(args, *format);
-	while (*format)
+	if (format == NULL)
 	{
-		if (*format == '%')
-		{
-			format++;
-			if (*format == '%')
-			{
-				putchar('%');
-				count++;
-			}
-			else if (*format == 'c')
-			{
-				int ch = va_arg(args, int);
-
-				putchar(ch);
-				count++;
-			}
-			else if (*format == 's')
-			{
-				char *str = va_arg(args, char *);
-
-				while (*str)
-				{
-					putchar(*str);
-					str++;
-					count++;
-				}
-			}
-		}
-		else if (*format == '\\')
-		{
-			format++;
-			if (*format == 'n')
-				putchar('\n');
-		}
-		else
-			putchar(*format);
-		format++;
+		return (-1);
 	}
-	return (count);
+	va_start(arg_list, format);
+	printed_cha = parser(format, f_list, arg_list);
+	va_end(arg_list);
+	return (printed_cha);
 }
