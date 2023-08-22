@@ -2,32 +2,30 @@
 
 /**
  * parser - Receives the main string and all the necessary parameters to
- * 	print a formated string.
+ * print a formated string.
  * @format: A string containing all the desired characters.
  * @f_list: A list of all the posible functions.
  * @arg_list: A list containing all the argumentents passed to the program.
  * Return: A total count of the characters printed.
  */
-
-int parset(const char *format, conver_t f_list[], va_list arg_list)
+int parser(const char *format, conver_t f_list[], va_list arg_list)
 {
-	int i, j, p_value, printed_cha;
-	
+	int i, j, r_val, printed_cha;
+
 	printed_cha = 0;
-	for (i = 0; format[i] != '\0'; i++)
+	for (i = 0; format[i] != '\0'; i++)/* Iterates through the main str*/
 	{
-		if (format[i] == '%')
+		if (format[i] == '%') /*Checks for format specifiers*/
 		{
+			/*Iterates through struct to find the right func*/
 			for (j = 0; f_list[j].sym != NULL; j++)
 			{
 				if (format[i + 1] == f_list[j].sym[0])
 				{
-					p_value = f_list[j].f(arg_list);
-					if (p_value == -1)
-					{
+					r_val = f_list[j].f(arg_list);
+					if (r_val == -1)
 						return (-1);
-					}
-					printed_cha += p_value;
+					printed_cha += r_val;
 					break;
 				}
 			}
@@ -40,15 +38,13 @@ int parset(const char *format, conver_t f_list[], va_list arg_list)
 					printed_cha = printed_cha + 2;
 				}
 				else
-				{
 					return (-1);
-				}
 			}
-			i = i + 1;
+			i = i + 1; /*Updating i to skip format symbols*/
 		}
 		else
 		{
-			_write_char(format[i]);
+			_write_char(format[i]); /*call the write function*/
 			printed_cha++;
 		}
 	}
