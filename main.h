@@ -7,7 +7,7 @@
 
 /**
 * struct convert - defines a structure for placeholders and the
-* 		function they call.
+*	function they call.
 *
 * @sym: The placsholders
 * @f: The function associated
