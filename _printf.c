@@ -1,32 +1,50 @@
 #include "main.h"
+#include <limits.h>
+#include <stdio.h>
 
 /**
- * _printf - Receives the main string and all the necessary parameters to
- * print a formated string
- * @format: A string containing all the desired characters
- * Return: A total count of the characters printed
+ * _printf - produces output according to a format
+ * @format: format string containing the characters and the specifiers
+ * Description: this function will call the get_print() function that will
+ * determine which printing function to call depending on the conversion
+ * specifiers contained into fmt
+ * Return: length of the formatted output string
  */
-
 int _printf(const char *format, ...)
 {
-	int printed_cha;
-	conver_t f_list[] = {
-		{"c", print_char},
-		{"s", print_string},
-		{"%", print_percent},
-		{"d", print_integer},
-		{"i", print_integer},
-		{"b", print_binary},
-		{NULL, NULL},
-	};
-	va_list arg_list;
+	int (*pfunc)(va_list, sol_t *);
+	const char *p;
+	va_list arguments;
+	sol_t sol = {0, 0, 0};
 
-	if (format == NULL)
-	{
+	register int count = 0;
+
+	va_start(arguments, format);
+	if (!format || (format[0] == '%' && !format[1]))
 		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (p = format; *p; p++)
+	{
+		if (*p == '%')
+		{
+			p++;
+			if (*p == '%')
+			{
+				count += _putchar('%');
+				continue;
+			}
+			while (get_sol(*p, &sol))
+				p++;
+			pfunc = get_print(*p);
+			count += (pfunc)
+				? pfunc(arguments, &sol)
+				: _printf("%%%c", *p);
+		} else
+			count += _putchar(*p);
 	}
-	va_start(arg_list, format);
-	printed_cha = parser(format, f_list, arg_list);
-	va_end(arg_list);
-	return (printed_cha);
+	_putchar(-1);
+	va_end(arguments);
+	return (count);
+
 }
